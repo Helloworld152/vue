@@ -3,6 +3,9 @@ import Home from "../views/Home.vue";
 import Login from "../views/Login.vue";
 import SignUp from "../views/SignUp.vue";
 import UserPage from "../views/UserPage.vue";
+import Posts from "../views/Posts.vue";
+import AddPost from "@/views/AddPost.vue";
+import MyPosts from "@/views/MyPosts.vue";
 
 const routes = [
     {
@@ -24,6 +27,27 @@ const routes = [
         path: '/userinfo',
         name: 'UserInfo',
         component: UserPage,
+        meta: {
+            requiredAuth: true
+        }
+    },
+    {
+        path: '/posts',
+        name: 'Posts',
+        component: Posts
+    },
+    {
+        path: '/addpost',
+        name: 'AddPost',
+        component: AddPost,
+        meta: {
+            requiredAuth: true
+        }
+    },
+    {
+        path: '/myposts',
+        name: 'MyPosts',
+        component: MyPosts,
         meta: {
             requiredAuth: true
         }

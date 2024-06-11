@@ -1,9 +1,9 @@
 <template>
     <div>
         <h1>用户信息</h1>
-        <p>用户名：{{ userInfo.username }}</p>
-        <p>用户id：{{ userInfo.id }}</p>
-        <p>Steam 用户名：{{ userInfo.steamUserName || '未绑定' }}</p>
+        <el-text >用户名：{{ userInfo.username }}</el-text>
+        <el-text>用户id：{{ userInfo.id }}</el-text>
+        <el-text>Steam 用户名：{{ userInfo.steamUserName || '未绑定' }}</el-text>
         <div v-if="!userInfo.steamUserName">
             <el-form :model="form" label-width="200px">
                 <el-form-item label="绑定Steam 用户名">
@@ -15,7 +15,7 @@
             </el-form>
         </div>
         <div v-else>
-            <el-button type="primary" @click="getSteamGameInfo">解绑</el-button>
+            <el-button type="primary" @click="unbindSteam">解绑</el-button>
             <div>
                 <el-table :data="games" width="100%">
                     <el-table-column label="Image" width="100">
@@ -87,6 +87,24 @@ export default {
                 alert('Bind Steam successful!');
                 this.fetchUserInfo();
                 this.getSteamGameInfo();
+                this.form.steamUserName = '';
+            }).catch(error => {
+                console.error(error);
+                alert('Bind Steam failed!');
+            })
+        },
+        unbindSteam() {
+            const token = localStorage.getItem('token');
+            const config = {
+                headers: {
+                    'Authorization': `Token ${token}`
+                },
+            }
+            axios.get('http://localhost:8000/api/unbindsteam/', config).then(response => {
+                console.log(response.data);
+                alert('Unbind Steam successful!');
+                this.fetchUserInfo();
+                this.games = [];
                 this.form.steamUserName = '';
             }).catch(error => {
                 console.error(error);

@@ -17,11 +17,11 @@ export default {
                 password: this.loginForm.password
             }).then(response =>{
                 console.log(response.data);
-                alert('Registration successful!');
+                this.$message.success('注册成功');
                 this.$router.push('/login');
             }).catch(error => {
                 console.error(error);
-                alert('Registration failed!');
+                this.$message.error('注册失败');
             });
         }
     }

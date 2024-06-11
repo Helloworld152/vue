@@ -20,12 +20,12 @@ export default {
                 const token = response.data.token;
                 localStorage.setItem('token', token);
                 // 处理登录成功的逻辑，比如跳转页面或者显示成功提示
-                alert('登录成功！');
+                this.$message.success('登录成功');
                 this.$router.push('/userinfo');
             }).catch(error => {
                 console.error(error);
                 // 处理登录失败的逻辑，比如显示错误提示
-                alert('登录失败，请检查用户名和密码！');
+                this.$message.error('登录失败，请检查用户名和密码！');
             })
         }
     }
@@ -33,7 +33,7 @@ export default {
 </script>
 
 <template>
-    <div class="login-container">
+    <div class="login-container" :class="{'background-image': false}">
         <el-form ref="loginForm" :model="loginForm" label-width="80px" class="login-form">
             <el-form-item label="用户名" prop="username">
                 <el-input v-model="loginForm.username" placeholder="请输入用户名"></el-input>
@@ -49,5 +49,13 @@ export default {
 </template>
 
 <style scoped>
-
+.background-image {
+    width: 100vh;
+    height: 100vh; /* 或者设置成其他你需要的高度 */
+    display: flex;
+    background-size: cover;
+    background-position: center;
+    /* 动态绑定背景图片 */
+    background-image: url('../../images/2.jpg');
+}
 </style>

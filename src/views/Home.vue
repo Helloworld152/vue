@@ -1,17 +1,11 @@
 <template>
     <div class="computer-container">
-        <!-- 导航栏 -->
-        <el-aside width="200px" class="computer-aside">
-            <el-menu :default-active="activeMenu" @select="handleMenuSelect">
-                <el-menu-item index="game">游戏</el-menu-item>
-                <el-menu-item index="discussion">讨论</el-menu-item>
-                <el-menu-item index="userinfo">我的</el-menu-item>
-            </el-menu>
-        </el-aside>
-        <!-- 内容区域 -->
-        <el-main class="computer-main">
-            <router-view></router-view>
-        </el-main>
+        <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+            <el-menu-item index="1">游戏商店</el-menu-item>
+            <el-menu-item index="2">关于</el-menu-item>
+            <el-menu-item index="3">服务</el-menu-item>
+            <el-menu-item index="4">我的</el-menu-item>
+        </el-menu>
     </div>
 </template>
 
@@ -36,12 +30,16 @@ export default {
 <style scoped>
 .computer-container {
     display: flex;
-    height: 100vh;
 }
 
 .computer-aside {
     background-color: #f0f2f5;
     border-right: 1px solid #e4e7ed;
+}
+
+.el-menu-demo {
+    background-color: #545c64;
+    color: #fff;
 }
 
 .computer-main {
