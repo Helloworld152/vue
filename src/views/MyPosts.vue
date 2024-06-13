@@ -1,19 +1,23 @@
 <template>
-    <span>
+    <div class="container">
         <h1>我的帖子</h1>
         <el-divider></el-divider>
         <div class="post-button-container">
             <el-button type="primary" size="medium" @click="addPost">发帖</el-button>
         </div>
+        <el-empty v-if="posts.length === 0" description="你还没有发布任何帖子">
+        </el-empty>
         <el-row :gutter="20">
-            <el-col :span="40" v-for="post in posts" :key="post.id">
-                <el-card shadow="hover" style="margin-bottom: 20px; min-width: 800px">
-                    <div slot="header" class="post-title">
-                        <span>{{ post.title }}</span>
-                    </div>
+            <el-col :span="24" v-for="post in posts" :key="post.id">
+                <el-card shadow="hover" class="post-card">
                     <el-collapse>
                         <el-collapse-item>
-                            <span>{{ post.content }}</span>
+                            <template #title>
+                                <div class="post-title">
+                                    {{ post.title }}
+                                </div>
+                            </template>
+                            <span class="post-content">{{ post.content }}</span>
                         </el-collapse-item>
                     </el-collapse>
                     <div slot="footer">
@@ -25,7 +29,37 @@
                     <div class="post-button">
                         <el-button type="primary" @click="toggleComments(post)" size="mini">评论</el-button>
                         <el-button type="primary" @click="deletePost(post.id)" size="mini">编辑帖子</el-button>
-                        <el-button type="danger" @click="deletePost(post.id)" size="mini">删除帖子</el-button>
+                        <el-button type="danger" @click="deletePostDialog = true" size="mini">删除帖子</el-button>
+
+<!--                        <el-dialog v-model="editPostDialog" title="编辑帖子" width="500" :before-close="handleClose">-->
+<!--                            <template #footer>-->
+<!--                                <div class="dialog-footer">-->
+<!--                                    <el-form ref="postForm" :model="postForm">-->
+<!--                                        <el-form-item label="标题" prop="title">-->
+<!--                                            <el-input v-model="postForm.title"></el-input>-->
+<!--                                        </el-form-item>-->
+<!--                                        <el-form-item label="内容" prop="content">-->
+<!--                                            <el-input type="textarea" v-model="postForm.content"></el-input>-->
+<!--                                        </el-form-item>-->
+<!--                                        <el-form-item>-->
+<!--                                            <el-button type="primary" @click="submitForm">Submit</el-button>-->
+<!--                                        </el-form-item>-->
+<!--                                    </el-form>-->
+<!--                                </div>-->
+<!--                            </template>-->
+<!--                        </el-dialog>-->
+
+                        <el-dialog v-model="deletePostDialog" title="注意" width="500" :before-close="handleClose">
+                            <span>确定要删除这个帖子吗？</span>
+                            <template #footer>
+                                <div class="dialog-footer">
+                                    <el-button @click="deletePostDialog = false">取消</el-button>
+                                    <el-button type="primary" @click="deletePost(post.id)">
+                                        确定
+                                    </el-button>
+                                </div>
+                            </template>
+                        </el-dialog>
                     </div>
                     <div v-if="post.showComments">
                         <el-divider></el-divider>
@@ -33,7 +67,18 @@
                             <p><strong>{{ comment.author_username }}</strong> ({{ comment.create_time }}):</p>
                             <div class="comment-container">
                                 <p>{{ comment.content }}</p>
-                                <el-button @click="deleteComment(post, comment)" size="mini" class="comment-button" plain>删除</el-button>
+                                <el-button @click="deleteCommentDialog = true" size="mini" class="comment-button" plain>删除</el-button>
+                                <el-dialog v-model="deleteCommentDialog" title="注意" width="500" :before-close="handleClose">
+                                    <span>确定要删除这个评论吗？</span>
+                                    <template #footer>
+                                        <div class="dialog-footer">
+                                            <el-button @click="deleteCommentDialog = false">取消</el-button>
+                                            <el-button type="primary" @click="deleteComment(post, comment)">
+                                                确定
+                                            </el-button>
+                                        </div>
+                                    </template>
+                                </el-dialog>
                             </div>
                             <el-divider></el-divider>
                         </div>
@@ -50,17 +95,19 @@
                 </el-card>
             </el-col>
         </el-row>
-    </span>
+    </div>
 </template>
 
 <script>
 import axios from 'axios';
-import { format } from 'date-fns';
 
 export default {
     data() {
         return {
-            posts: []
+            posts: [],
+            deletePostDialog: false,
+            deleteCommentDialog: false,
+            editPostDialog: false
         };
     },
     created() {
@@ -177,11 +224,10 @@ export default {
 
 <style scoped>
 /* 设置容器的高度和宽度 */
-.scroll-container {
-    height: 100vh; /* 设置容器的高度 */
-    width: 80vw; /* 设置容器的宽度 */
-    overflow-y: scroll; /* 使容器具有垂直滚动条 */
-    border: 1px solid #ccc; /* 添加边框 */
+.container {
+    width: 60vw; /* 设置容器的宽度 */
+    justify-content: center;
+    align-items: center;
 }
 
  .card-footer {
@@ -203,8 +249,13 @@ export default {
     justify-content: flex-end;
 }
 
+.post-card {
+    margin-bottom: 20px;
+    width: 100%;
+}
+
 .post-title {
-    font-size: 25px; /* 设置标题字体大小 */
+    font-size: 20px; /* 设置标题字体大小 */
     color: #333; /* 设置标题字体颜色 */
     font-weight: bold; /* 设置标题加粗 */
     margin-bottom: 10px; /* 设置标题与内容之间的间距 */
@@ -219,5 +270,10 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.post-content {
+    white-space: pre-wrap;
+    font-size: 15px;
 }
 </style>

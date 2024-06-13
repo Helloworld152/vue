@@ -1,28 +1,4 @@
 <template>
-<!--    <div class="game-card">-->
-<!--        <el-row>-->
-<!--            <el-col :span="4">-->
-<!--                <el-image :src="game.icon" class="game-icon"></el-image>-->
-<!--            </el-col>-->
-<!--            <el-col :span="20">-->
-<!--                <div class="game-details">-->
-<!--                    <div class="game-title">{{ game.title }}</div>-->
-<!--                    <div class="game-trophies">-->
-<!--                        <el-badge :value="game.trophies.platinum" class="trophy platinum"></el-badge>-->
-<!--                        <el-badge :value="game.trophies.gold" class="trophy gold"></el-badge>-->
-<!--                        <el-badge :value="game.trophies.silver" class="trophy silver"></el-badge>-->
-<!--                        <el-badge :value="game.trophies.bronze" class="trophy bronze"></el-badge>-->
-<!--                        <span>{{ game.trophies.total }}/{{ game.trophies.totalPossible }}</span>-->
-<!--                    </div>-->
-<!--                    <div class="game-last-played">{{ game.lastPlayed }}</div>-->
-<!--                    <div class="game-progress">-->
-<!--                        <el-progress :percentage="game.progress" status="success"></el-progress>-->
-<!--                    </div>-->
-<!--                    <div class="game-hours">{{ game.hours }}h</div>-->
-<!--                </div>-->
-<!--            </el-col>-->
-<!--        </el-row>-->
-<!--    </div>-->
     <el-card>
         <div slot="header" class="clearfix">
             <span>{{ game.title }}</span>
